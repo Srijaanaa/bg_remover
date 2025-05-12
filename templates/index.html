@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Remover</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.querySelector('button[type="submit"]').disabled = true;
+        }
+    </script>
+</head>
+<body>
+    <!-- Upload Container -->
+    <div class="container upload-container">
+        <h1>Background Remover</h1>
+        <p>Upload an image to remove its background.</p>
+        
+        <!-- Upload Form -->
+        <form action="/upload" method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            <input type="file" name="image" accept="image/*" required>
+            <select name="model" class="model-select">
+                <option value="isnet-general-use">General Objects (Products, Items)</option>
+                <option value="u2net">Human Portraits & General Purpose</option>
+                <option value="isnet-animal">Animals (Pets, Wildlife)</option>
+            </select>
+            <button type="submit">Remove Background</button>
+        </form>
+        
+        <!-- Loading Spinner -->
+        <div id="loading" style="display: none; margin-top: 20px;">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        
+        <!-- Error Message -->
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        
+        <!-- Original Image Display -->
+        {% if original_image %}
+            <div class="original-image-section">
+                <h3>Uploaded Image</h3>
+                <img src="{{ url_for('static', filename='uploads/' + original_image) }}" alt="Original Image" class="preview-image">
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Processed Image Container -->
+    {% if preview_image %}
+        <div class="container processed-container">
+            <h2>Processed Image</h2>
+            <img src="{{ url_for('static', filename='processed/' + preview_image) }}" alt="Processed Image" class="preview-image">
+            <div class="preview-buttons">
+                <a href="{{ url_for('download_image', filename=preview_image, original=original_image) }}" class="button download">Download</a>
+                <a href="{{ url_for('cancel', original_filename=original_image, preview_filename=preview_image) }}" class="button cancel">Cancel</a>
+            </div>
+        </div>
+    {% endif %}
+</body>
+</html>
