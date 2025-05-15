@@ -45,7 +45,7 @@ Run the following command to install required packages:
   ```
 - For Python 3.11:
   ```bash
-  pip install rembg==2.0.57 onnxruntime==1.19.2 opencv-python-headless==4.10.0.84 numpy==2.2.5 pillow==11.2.1 flask
+  pip install rembg==2.0.57 onnxruntime==1.20.0 opencv-python-headless==4.10.0.84 numpy==2.2.5 pillow==11.2.1 flask
   ```
 
 ### 4. Run the Application
